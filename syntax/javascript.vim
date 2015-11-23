@@ -52,7 +52,7 @@ syntax sync fromstart
 syntax match   shellbang "^#!.*node\>"
 syntax match   shellbang "^#!.*iojs\>"
 
-syntax match   javascriptOpSymbols             /[+\-*/%\^=!<>&|?:]\+/ contains=javascriptOpSymbol nextgroup=@javascriptComments,@javascriptExpression skipwhite skipempty
+syntax match   javascriptOpSymbols             /[+\-*/%\^=!&|?:]\+/ contains=javascriptOpSymbol nextgroup=@javascriptBlock,@javascriptComments,@javascriptExpression skipwhite skipempty
 syntax match   javascriptOpSymbols             /:\ze\_[^+\-*/%\^=!<>&|?:]/ nextgroup=@javascriptComments,@javascriptStatement,javascriptCase skipwhite skipempty
 
 syntax match   javascriptInvalidOp             contained /[+\-*/%\^=!<>&|?:]\+/ 
