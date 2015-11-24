@@ -299,7 +299,7 @@ syntax region  javascriptMethodName            contained matchgroup=javascriptPr
 syntax match   javascriptSyncFunc              contained /\s*/ nextgroup=javascriptFuncName,javascriptFuncArg
 syntax match   javascriptAsyncFunc             contained /\s*\*\s*/ nextgroup=javascriptFuncName,javascriptFuncArg skipwhite skipempty
 syntax match   javascriptFuncName              contained /[a-zA-Z_$]\k*/ nextgroup=javascriptFuncArg skipwhite
-syntax region  javascriptFuncArg               contained matchgroup=javascriptParens start=/(/ end=/)/ contains=javascriptFuncKeyword,javascriptFuncComma,javascriptDefaultAssign,@javascriptComments nextgroup=javascriptBlock skipwhite skipwhite skipempty
+syntax region  javascriptFuncArg               contained matchgroup=javascriptParens start=/(/ end=/)/ contains=javascriptFuncKeyword,javascriptFuncComma,javascriptDefaultAssign,@javascriptComments nextgroup=flowBlockTypeAnnotation,javascriptBlock skipwhite skipwhite skipempty
 
 " syntax match   javascriptFuncArg               contained /(\_[^()]*)/ contains=javascriptParens,javascriptFuncKeyword,javascriptFuncComma,javascriptDefaultAssign,@javascriptComments nextgroup=javascriptBlock skipwhite skipwhite skipempty
 syntax match   javascriptFuncComma             contained /,/
@@ -360,6 +360,14 @@ syntax match   javascriptArrowFuncDef          contained /[a-zA-Z_$][a-zA-Z0-9_$
 syntax match   javascriptArrowFunc             /=>/
 syntax match   javascriptArrowFuncArg          contained /[a-zA-Z_$]\k*/
 syntax keyword javascriptFuncKeyword           function nextgroup=javascriptAsyncFunc,javascriptSyncFunc
+
+" Flow type annotations
+syntax region  flowBlockTypeAnnotation      contained start=/:/ end=/{/me=s-1 contains=@flowType,flowColon nextgroup=javascriptBlock skipwhite skipempty
+syntax cluster flowType                     contains=flowKeyword,javascriptIdentifierName,flowPolymorphicType
+syntax match   flowColon                    contained /:/
+syntax match   flowBrackets                 contained /[<>]/
+syntax region  flowPolymorphicType          contained matchgroup=flowBrackets start=/</ end=/>/ contains=@flowType
+syntax keyword flowKeyword                  contained any boolean mixed number string void
 
 if exists("did_javascript_hilink")
   HiLink javascriptReserved             Error
@@ -445,6 +453,10 @@ if exists("did_javascript_hilink")
   HiLink javascriptClassSuperName       Function
   HiLink javascriptClassStatic          StorageClass
   HiLink javascriptClassSuper           keyword
+
+  HiLink flowBrackets                   Operator
+  HiLink flowColon                      Operator
+  HiLink flowKeyword                    Keyword
 
   HiLink shellbang                      Comment
 
